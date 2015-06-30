@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 dates = ['2014-12-15 12:00']
 
 for date in dates:
-    thismap = TMap(date, data_dir=join(CThome, 'data'), maps_dir=CThome)
+    thismap = TMap(date, data_dir=join(CThome, 'data'), maps_dir=CThome, verbose=True)
     thismap.save()
     fig = plt.figure(figsize=(32, 24))
     thismap.plot()
