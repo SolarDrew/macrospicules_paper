@@ -1,0 +1,12 @@
+#$ -S /bin/sh
+#$ -cwd
+#$ -q large.q
+
+module load gcc/4.8.1
+module load openmpi
+source ~/virtualenv-12.1.1/AR-tmaps-env/bin/activate
+cd /imaps/holly/home/ajl7/macrospicules_paper
+
+rm runall.sqe.*
+
+python run_tmaps.py
