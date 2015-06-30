@@ -6,7 +6,7 @@ CThome = expanduser(join('~', 'CoronaTemps'))
 sys.path.append(CThome)
 from temperature import TemperatureMap as TMap
 from matplotlib import pyplot as plt
-from sunpy.time import parse_time as time
+from sunpy.time import parse_time as parse
 
 dates = ['2014-12-15 12:00']
 
