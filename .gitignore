@@ -1,0 +1,14 @@
+Figs/*
+paper/ms_temp_paper.aux
+paper/ms_temp_paper.bbl
+paper/ms_temp_paper.blg
+paper/ms_temp_paper.ilg
+paper/ms_temp_paper.ind
+paper/ms_temp_paper.log
+paper/ms_temp_paper.pdf
+paper/ms_temp_paper.pytxcode
+paper/ms_temp_paper.synctex.gz
+paper/ms_temp_paperNotes.bib
+paper/pythontex-files-ms_temp_paper/*
+
+

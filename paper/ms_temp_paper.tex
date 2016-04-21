@@ -1,9 +1,47 @@
 % DOCUMENT PREAMBLE
 \documentclass{emulateapj}
 % \documentclass[referee]{apj}
+\usepackage{pythontex}
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% PythonTeX Bug Fix % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% pytexbug fix for context in customcode.
+\makeatletter
+\renewenvironment{pythontexcustomcode}[2][begin]{%
+    \VerbatimEnvironment
+    \Depythontex{env:pythontexcustomcode:om:n}%
+    \ifstrequal{#1}{begin}{}{%
+        \ifstrequal{#1}{end}{}{\PackageError{\pytx@packagename}%
+            {Invalid optional argument for pythontexcustomcode}{}
+        }%
+    }%
+    \xdef\pytx@type{CC:#2:#1}%
+    \edef\pytx@cmd{code}%
+    % PATCH \def\pytx@context{}%
+    \pytx@SetContext
+    % END PATCH
+    \def\pytx@group{none}%
+    \pytx@BeginCodeEnv[none]}%
+{\end{VerbatimOut}%
+\setcounter{FancyVerbLine}{\value{pytx@FancyVerbLineTemp}}%
+\stepcounter{\pytx@counter}%
+}%
+\makeatother
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\setpythontexcontext{figurewidth=\the\columnwidth}
+\newcommand{\includepgf}[1]{\IfFileExists{#1}{\input{#1}}{}}
 
 \usepackage{graphicx}
+\usepackage{pgf}
 \usepackage{float}
+\usepackage{import}
+\usepackage{cleveref}
+\crefname{equation}{Equation}{Equations}
+\crefname{figure}{Figure}{Figures}
+\crefname{section}{Section}{Sections}
+\crefname{table}{Table}{Tables}
+
 
 \usepackage{subcaption}
 
@@ -11,6 +49,16 @@
 \usepackage{microtype}
 
 \begin{document}
+\begin{pythontexcustomcode}{py}
+import texfigure
+texfigure.configure_latex_plots(pytex, font_size=8)
+
+pytex.formatter = texfigure.repr_latex_formatter
+
+import matplotlib.pyplot as plt
+
+manager = texfigure.Manager(pytex, '../')
+\end{pythontexcustomcode}
 
 \title{Solar jet observed at the limb in SDO/SST}
 \author{S.M.Bennett$^1$
@@ -126,12 +174,22 @@ We are fortunate that we can observe the jet feature in the STEREO-A Heliospheri
 This facilitates the building of a larger picture of the behaviour of the jet, the downside to this however, is that with STEREO-A being at such a distance the cadence is low, $~10$ mins.
 In this case we obtain 4 images in $30.4$ nm in which the jet is observed
 
-\begin{figure}[]
-	\includegraphics[width=\columnwidth]{../figures/STEREO-A.png} 
-	\caption{HI $30.4$ nm images at $07:26:15$, $07:36:15$, $07:46:15$ and $07:56:15$ going from left to right.}
-\end{figure}
+\begin{pycode}
+from sunpy.data.sample import AIA_171_IMAGE
+import sunpy.map
 
+aiamap = sunpy.map.Map(AIA_171_IMAGE)
 
+fig = plt.figure()
+im = aiamap.plot()
+
+lfig = manager.save_figure('sunpy1', fig)
+lfig.caption = r"EUV image of the million degree solar corona, taken with the Atmospheric Imaging Assembly on the NASA Solar Dynamics Observatory."
+\end{pycode}
+    
+\py|lfig|
+
+Look the sun is in \cref{fig:sunpy1}.
 
 
 \section{Doppler shift}
