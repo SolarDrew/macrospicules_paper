@@ -169,27 +169,71 @@ Observations in SDO record the entire lifetime of the feature, however the same 
 
 
 
+\subsection{Evolution}
+\begin{pycode}[T-D-plots]
+import pickle
+import def_spic
+import def_spic_SST
+
+path_131 = manager.data_file('jet_picks/131_records.pik')
+path_171 = manager.data_file('jet_picks/171_records.pik')
+path_211 = manager.data_file('jet_picks/211_records.pik')
+path_304 = manager.data_file('jet_picks/304_records.pik')
+path_335 = manager.data_file('jet_picks/335_records.pik')
+ha_path = manager.data_file('jet_picks/H_alpha_records.pik')
+
+jet_131 = pickle.load(open(path_131, 'r'))
+jet_171 = pickle.load(open(path_171, 'r'))
+jet_211 = pickle.load(open(path_211, 'r'))
+jet_304 = pickle.load(open(path_304, 'r'))
+jet_335 = pickle.load(open(path_335, 'r'))
+h_alpha = pickle.load(open(ha_path, 'r'))
+obj_131 = jet_131[0]
+obj_171 = jet_171[0]
+obj_211 = jet_211[0]
+obj_304 = jet_304[0]
+obj_335 = jet_335[0]
+obj_Ha = h_alpha[0]
+
+e_times_131 = obj_131.times
+lengths_131 = obj_131.all_length()
+
+e_times_171 = obj_171.times
+lengths_171 = obj_171.all_length()
+
+e_times_211 = obj_211.times
+lengths_211 = obj_211.all_length()
+
+e_times_304 = obj_304.times
+lengths_304 = obj_304.all_length()
+
+e_times_335 = obj_335.times
+lengths_335 = obj_335.all_length()
+
+e_times_Ha = obj_Ha.times
+lengths_Ha = obj_Ha.all_length()
+
+fig = plt.figure()
+plt.plot(e_times_131, lengths_131, color='green', label='13.1 nm')
+plt.plot(e_times_171, lengths_171, color='yellow', label='17.1 nm')
+plt.plot(e_times_211, lengths_211, color='purple', label='21.1 nm')
+plt.plot(e_times_304, lengths_304, color='orange', label='30.4 nm')
+plt.plot(e_times_335, lengths_335, color='blue', label='33.5 nm')
+plt.plot(e_times_Ha, lengths_Ha, color='darkgoldenrod', label='656.28 nm')
+plt.xlabel('Time [UCT]')
+plt.ylabel('Length [Mm]')
+td_fig = manager.save_figure('t-d-plot', fig)
+td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm" 
+
+\end{pycode}
+
+\py[T-D-plots]|td_fig|
+
 \subsection{STEREO-A}
 We are fortunate that we can observe the jet feature in the STEREO-A Heliospheric Imager (HI), with the position of the spacecraft at approximately $90\deg$ to the Sun-Earth line.
 This facilitates the building of a larger picture of the behaviour of the jet, the downside to this however, is that with STEREO-A being at such a distance the cadence is low, $~10$ mins.
 In this case we obtain 4 images in $30.4$ nm in which the jet is observed
 
-\begin{pycode}
-from sunpy.data.sample import AIA_171_IMAGE
-import sunpy.map
-
-aiamap = sunpy.map.Map(AIA_171_IMAGE)
-
-fig = plt.figure()
-im = aiamap.plot()
-
-lfig = manager.save_figure('sunpy1', fig)
-lfig.caption = r"EUV image of the million degree solar corona, taken with the Atmospheric Imaging Assembly on the NASA Solar Dynamics Observatory."
-\end{pycode}
-    
-\py|lfig|
-
-Look the sun is in \cref{fig:sunpy1}.
 
 
 \section{Doppler shift}
@@ -203,7 +247,7 @@ As a consequence of this, finding the total shift away from the core, $6562.8$ n
 For pixel points which are on-disk, we fit a single Gaussian and calculate the mean, as is standard, and for the two peak spectra, we have utilised a double Gaussian.
 However the problem becomes when we need to change between the two routines.
 
-As a solution to this problem we have utilised a Markov Chain Monte Carlo (MCMC) method to find the most accurate fit and the Bayesian Information Criterion (BIC) to test which of the two fits is most appropriate from a given line. 
+As a solution to this problem we have utilised a Markov Chain Monte Carlo (MCMC) method to find the most accurate fit for the  and the Bayesian Information Criterion (BIC) to test which of the two fits is most appropriate from a given line.
 
 
 
