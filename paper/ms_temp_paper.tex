@@ -169,7 +169,6 @@ Observations in SDO record the entire lifetime of the feature, however the same 
 
 
 
-<<<<<<< Updated upstream
 \subsection{STEREO-A}
 We are fortunate that we can observe the jet feature in the STEREO-A Heliospheric Imager (HI), with the position of the spacecraft at approximately $90\deg$ to the Sun-Earth line.
 This facilitates the building of a larger picture of the behaviour of the jet, the downside to this however, is that with STEREO-A being at such a distance the cadence is low, $~10$ mins.
@@ -192,14 +191,19 @@ lfig.caption = r"EUV image of the million degree solar corona, taken with the At
 
 Look the sun is in \cref{fig:sunpy1}.
 
-=======
-
-
-\subsection{STEREO}
->>>>>>> Stashed changes
 
 \section{Doppler shift}
 \label{dop_shift_sect}
+
+Possibly the most valuable information to be gained with respect to jets is pertaining to it rotational behaviour, therefore, we will use the spectral increments from the CRISP instrument to obtain line of sight Doppler velocities.
+There is however a hindrance with this, there are two seperate forms of the emmission spectra within the image.
+The region where the jet initialises, is on disk, and as a result the spectral analysis reveals an absorption spectra.
+Over the limb, however, the spectral profile changes to emission and we find two peaks.
+As a consequence of this, finding the total shift away from the core, $6562.8$ nm is made more complex.
+For pixel points which are on-disk, we fit a single Gaussian and calculate the mean, as is standard, and for the two peak spectra, we have utilised a double Gaussian.
+However the problem becomes when we need to change between the two routines.
+
+As a solution to this problem we have utilised a Markov Chain Monte Carlo (MCMC) method to find the most accurate fit and the Bayesian Information Criterion (BIC) to test which of the two fits is most appropriate from a given line. 
 
 
 
