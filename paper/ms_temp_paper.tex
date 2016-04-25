@@ -171,7 +171,7 @@ Observations in SDO record the entire lifetime of the feature, however the same 
 
 
 \subsection{Evolution}
-Let us examine the raw evolution of jet in the time distance plot in \ref{t-d-plot}.
+Let us examine the raw evolution of jet in the time distance plot in \ref{td_fig}.
 Here we have utilised the measuring tool to measure the extent of the feature in all the wavelengths in which it is visable.
 We find that the overall profile of its evolution contains two distinct peaks in most wavelengths, with the exception of $17.1$ nm.
 The first peak comes at $~07:37$ before a decrease in size and subsequent secondary expansion to its maximum length in H$\alpha$ and $30.4$ nm at approximately $07:49$.
@@ -230,12 +230,35 @@ plt.plot(e_times_335, lengths_335, color='blue', label='33.5 nm')
 plt.plot(e_times_Ha, lengths_Ha, color='darkgoldenrod', label='656.28 nm')
 plt.xlabel('Time [UCT]')
 plt.ylabel('Length [Mm]')
+plt.title('Length of the Jet over time')
+fig.autofmt_xdate()
 td_fig = manager.save_figure('t-d-plot', fig)
-td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H \alpha line starting at $07:42$" 
+td_fig.subfig_width = "\columnwidth"
+td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H \alpha line starting at $07:42$"
+
 
 \end{pycode}
 
 \py[T-D-plots]|td_fig|
+
+\begin{figure}
+	\centering
+	\py[T-D-plots]|td_fig.repr_subfigure()|
+	~
+	\begin{subtable}[b]{0.5\textwidth}
+		\centering
+		\begin{tabular}{ccc}
+		Wavelength, nm & Maximum Length, Mm & Maximum Velocity km/s \\
+		656.2 & 11.3 & 0.09 \\
+		30.4 & 12.6 & 31.5 \\
+		33.5 & 6.0 & 53.6 \\
+		21.1 & 5.5 & 50.1 \\
+		17.1 & 5.6 & 51.9 \\
+		13.1 & 5.6 & 36.6 \\
+		\end{tabular}
+		\caption{Table of maximised basic spatial properties of the jet.}
+	\end{subtable}
+\end{figure}
 
 \subsection{STEREO-A}
 We are fortunate that we can observe the jet feature in the STEREO-A Heliospheric Imager (HI), with the position of the spacecraft at approximately $90\deg$ to the Sun-Earth line.
