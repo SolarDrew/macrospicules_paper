@@ -175,7 +175,10 @@ Let us examine the raw evolution of jet in the time distance plot in \ref{td_fig
 Here we have utilised the measuring tool to measure the extent of the feature in all the wavelengths in which it is visable.
 We find that the overall profile of its evolution contains two distinct peaks in most wavelengths, with the exception of $17.1$ nm.
 The first peak comes at $~07:37$ before a decrease in size and subsequent secondary expansion to its maximum length in H$\alpha$ and $30.4$ nm at approximately $07:49$.
+This strongly implies that there is a second reconnection event in which a new material is accelerated into the atmosphere.
+As such let us turn to the CRISP instrument again. 
 
+With its higher resolution, a slit based analysis of the jet can be observed in 
 
 
 \begin{pycode}[T-D-plots]
@@ -188,7 +191,7 @@ path_171 = manager.data_file('jet_picks/171_records.pik')
 path_211 = manager.data_file('jet_picks/211_records.pik')
 path_304 = manager.data_file('jet_picks/304_records.pik')
 path_335 = manager.data_file('jet_picks/335_records.pik')
-ha_path = manager.data_file('jet_picks/H_alpha_records.pik')
+ha_path = manager.data_file('jet_picks/H_alpha_records.pik
 
 jet_131 = pickle.load(open(path_131, 'r'))
 jet_171 = pickle.load(open(path_171, 'r'))
@@ -259,6 +262,33 @@ td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple =
 		\caption{Table of maximised basic spatial properties of the jet.}
 	\end{subtable}
 \end{figure}
+
+
+\begin{pycode}[SST_slit]
+import numpy as np
+import sunpy.cm
+import matplotlib.pyplot as plt
+
+sst_slit_path = manager.data_file('2016-01-22 14:59:58.507931.npz')
+
+afile = np.load(sst_slit_path)
+data = afile['arr2']
+
+fig = plt.figure()
+plt.imshow(np.rot90(data[3]), , cmap='cubehelix', aspect='auto')
+plt.xlabel('Time in SST cadence (7.7 s)')
+plt.ylabel('Distance along the slit')
+sst_slit_fig = manager.save_figure('sst-slit', fig)
+sst_slit_fig.figure_width = \columnwidth
+sst_slit_fig.caption = 'CRISP/SST H alpha core line slit analysis.'
+\end{pycode}
+
+
+
+
+
+
+
 
 \subsection{STEREO-A}
 We are fortunate that we can observe the jet feature in the STEREO-A Heliospheric Imager (HI), with the position of the spacecraft at approximately $90\deg$ to the Sun-Earth line.
