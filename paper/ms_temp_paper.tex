@@ -191,7 +191,7 @@ path_171 = manager.data_file('jet_picks/171_records.pik')
 path_211 = manager.data_file('jet_picks/211_records.pik')
 path_304 = manager.data_file('jet_picks/304_records.pik')
 path_335 = manager.data_file('jet_picks/335_records.pik')
-ha_path = manager.data_file('jet_picks/H_alpha_records.pik
+ha_path = manager.data_file('jet_picks/H_alpha_records.pik')
 
 jet_131 = pickle.load(open(path_131, 'r'))
 jet_171 = pickle.load(open(path_171, 'r'))
@@ -238,13 +238,9 @@ fig.autofmt_xdate()
 td_fig = manager.save_figure('t-d-plot', fig)
 td_fig.subfig_width = "\columnwidth"
 td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H \alpha line starting at $07:42$"
-
-
 \end{pycode}
 
-\py[T-D-plots]|td_fig|
-
-\begin{figure}
+\begin{figure}[t]
 	\centering
 	\py[T-D-plots]|td_fig.repr_subfigure()|
 	~
@@ -272,18 +268,18 @@ import matplotlib.pyplot as plt
 sst_slit_path = manager.data_file('2016-01-22 14:59:58.507931.npz')
 
 afile = np.load(sst_slit_path)
-data = afile['arr2']
+data = afile['arr_2']
 
 fig = plt.figure()
-plt.imshow(np.rot90(data[3]), , cmap='cubehelix', aspect='auto')
+plt.imshow(np.rot90(data[2])[::-1, 100:], vmin=1000, cmap='viridis', aspect='auto', origin='lower')
 plt.xlabel('Time in SST cadence (7.7 s)')
 plt.ylabel('Distance along the slit')
 sst_slit_fig = manager.save_figure('sst-slit', fig)
-sst_slit_fig.figure_width = \columnwidth
-sst_slit_fig.caption = 'CRISP/SST H alpha core line slit analysis.'
+sst_slit_fig.figure_width = "\columnwidth"
+sst_slit_fig.caption = r'CRISP/SST H$\alpha$ core line slit analysis.'
 \end{pycode}
 
-
+\py[SST_slit]|sst_slit_fig|
 
 
 
