@@ -29,7 +29,7 @@
 \makeatother
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\setpythontexcontext{figurewidth=\the\columnwidth}
+\setpythontexcontext{figurewidth=\the\columnwidth, textwidth=\the\textwidth}
 \newcommand{\includepgf}[1]{\IfFileExists{#1}{\input{#1}}{}}
 
 \usepackage{graphicx}
@@ -50,6 +50,8 @@
 
 \begin{document}
 \begin{pythontexcustomcode}{py}
+from __future__ import print_function
+import sys
 import texfigure
 texfigure.configure_latex_plots(pytex, font_size=8)
 
@@ -238,14 +240,14 @@ plt.ylabel('Length [Mm]')
 plt.title('Length of the Jet over time')
 fig.autofmt_xdate()
 td_fig = manager.save_figure('t-d-plot', fig)
-td_fig.subfig_width = "\columnwidth"
-td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H \alpha line starting at $07:42$"
+td_fig.subfig_width = r"\columnwidth"
+td_fig.caption = r"Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H$\alpha$ line starting at $07:42$"
 \end{pycode}
 
 \begin{figure}[t]
 	\centering
 	\py[T-D-plots]|td_fig.repr_subfigure()|
-	~
+	
 	\begin{subtable}[b]{0.5\textwidth}
 		\centering
 		\begin{tabular}{ccc}
@@ -263,30 +265,61 @@ td_fig.caption = "Darkgold = H alpha, Blue = 33.5 nm, Orange = 30.4 nm, Purple =
 
 
 \begin{pycode}[SST_slit]
+from __future__ import print_function
 import numpy as np
 import sunpy.cm
 import matplotlib.pyplot as plt
+from astropy.visualization.mpl_normalize import ImageNormalize 
+from astropy import visualization
+
+norm=ImageNormalize(stretch=visualization.AsinhStretch(1))
 
 sst_slit_path = manager.data_file('2016-01-22 14:59:58.507931.npz')
 
 afile = np.load(sst_slit_path)
 data = afile['arr_2']
 
-fig = plt.figure()
-plt.imshow(np.rot90(data[2])[::-1, 100:], vmin=1000, cmap='viridis', aspect='auto', origin='lower')
+fig = plt.figure(figsize=texfigure.figsize(pytex, figure_width_context='textwidth'))
+plt.imshow(np.rot90(data[2])[::-1, 100:], cmap='viridis', aspect='auto', origin='lower', norm=norm)
+plt.colorbar()
 plt.xlabel('Time in SST cadence (7.7 s)')
 plt.ylabel('Distance along the slit')
 sst_slit_fig = manager.save_figure('sst-slit', fig)
-sst_slit_fig.figure_width = "\columnwidth"
+sst_slit_fig.figure_env_name = r'figure*'
+sst_slit_fig.figure_width = r'\textwidth'
+sst_slit_fig.placement = 't'
 sst_slit_fig.caption = r'CRISP/SST H$\alpha$ core line slit analysis.'
+
+print(sst_slit_fig.repr_figure(), file=sys.stderr)
 \end{pycode}
 
 \py[SST_slit]|sst_slit_fig|
 
 
+\begin{pycode}[Onset]
+import numpy as np
+import sunpy.map
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import ImageGrid
+
+onset_path_113 = manager.data_file('crops_113.npy')
 
 
 
+ims = [np.load(onset_path_113), np.load('crop_114.npy'), np.load('crop_115.npy')]
+
+fig = plt.figure(1, (4.,4.), figsize=texfigure.figsize(pytex, 		figure_width_context='textwidth'))
+grid = ImageGrid(fig, 111, nrows_ncols=(2,2), axes_pad=0.0, label_mode="1")
+
+for i, anim in enumerate(ims):
+	plt.imshow(anim, axes=grid[i], cmap='sdoaia304', origin='lower')
+	
+onset_fig = manager.save_figure('onset_fig', fig)
+onset_fig.placement = 'b'
+onset_fig.caption = r'Expanded view of the origin of the jet feature as it forms. Observe the seperate footpoints forming the "inverted Y" shape of the standard model.'	
+\end{pycode}
+
+\py[Onset]|onset_fig|
 
 \subsection{STEREO-A}
 We are fortunate that we can observe the jet feature in the STEREO-A Heliospheric Imager (HI), with the position of the spacecraft at approximately $90\deg$ to the Sun-Earth line.
