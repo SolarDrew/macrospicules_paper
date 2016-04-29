@@ -161,8 +161,7 @@ Let us begin with the evolution of the jet feature over time.
 We have utilised a self-built, manual feature measuring tool, which, uses a clicking mechanism to select the foot and tip of the macrospicule, calculates the half weight and uses this as a guide to measure the width of the feature.
 Using this tool on each frame, and therefore the time cadence of the instrument, we obtain the evolution of the jet and general ballistic information.
 We have used this tool on each wavelength to examine the extent upwards through the corona. 
-
-\begin{pycode}[Onset]
+Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at 07:48:00.\begin{pycode}[Onset]
 import numpy as np
 import sunpy.map
 import matplotlib.pyplot as plt
@@ -203,10 +202,6 @@ By \cref{onset2} shows the development of these two points \emph{i.e.} have now 
 In the final formation stage, \cref{onset3} the jet has formed and is now a distinct feature against the background.
 This behaviour is in keeping with the standard jet formation model demonstrated by \cite{Shibata1992}, where the authors describe an 'inverted y' shape of brightened material that is a result of small scale flux emergence reconnection.
 
-Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at 07:48:00.
-
-
-
 
 
 \subsection{Evolution}
@@ -214,10 +209,20 @@ Let us examine the raw evolution of jet in the time distance plot in \cref{fig:t
 Here we have utilised the measuring tool to measure the extent of the feature in all the wavelengths in which it is visible.
 We find that the overall profile of its evolution contains two distinct peaks in most wavelengths, with the exception of $17.1$ nm.
 The first peak comes at $~07:37$ before a decrease in size and subsequent secondary expansion to its maximum length in H$\alpha$ and $30.4$ nm at approximately $07:49$.
-This strongly implies that there is a second reconnection event in which a new material is accelerated into the atmosphere.
-As such let us turn to the CRISP instrument again. 
+This strongly implies that there is a second initialising type event in which a new material is accelerated into the atmosphere.
+As such let us turn to the CRISP instrument again.
 
-With its higher resolution, a slit based analysis of the jet can be observed in \cref{fig:sst-slit}
+With its higher resolution, a slit based analysis of the jet can be observed in \cref{fig:sst-slit}.
+Notice two distinct curves in the image, the first onset is at approximately $17$ and the second at a bright point originating at $~85$.
+We find that in this second phase of the jet, plasma extends higher into the atmosphere.
+This result is unusual as previous observations of recurrent jets have shown decay in subsequent initialisation events in observations such as \cite{Jiang2007}.
+Unfortunately the base of this jet on this occasion is obscured by material in front of the base, however, note the extensive brightening similar to that evident in the first jet, suggesting a similar initial reconnection.
+
+Considering the observations in multiple wavelengths, we notice the smaller extension visible in the coronal wavelengths.
+This is not unexpected, given its extent in the chromospheric lines, we can begin to categorise this as a chromospheric feature as opposed to coronal.
+% need a figure here of the coronal lines
+Its appearance in Fig. X demonstrates that it is, in all likelihood an absorption feature, however we will investigate this further below.
+
 
 
 \begin{pycode}[T-D-plots]
