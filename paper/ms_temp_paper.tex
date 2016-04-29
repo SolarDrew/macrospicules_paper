@@ -157,18 +157,53 @@ As we have a suite of observing instruments to utilise we aim to build a compreh
 \section{Time Distance Evolution}
 \label{time_dist_sect}
 
-
 Let us begin with the evolution of the jet feature over time. 
 We have utilised a self-built, manual feature measuring tool, which, uses a clicking mechanism to select the foot and tip of the macrospicule, calculates the half weight and uses this as a guide to measure the width of the feature.
 Using this tool on each frame, and therefore the time cadence of the instrument, we obtain the evolution of the jet and general ballistic information.
 We have used this tool on each wavelength to examine the extent upwards through the corona. 
 
+\begin{pycode}[Onset]
+import numpy as np
+import sunpy.map
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import ImageGrid
+
+onset_path_113 = manager.data_file('crop_113.npy')
+onset_path_114 = manager.data_file('crop_114.npy')
+onset_path_115 = manager.data_file('crop_115.npy')
+
+ims = [np.load(onset_path_113), np.load(onset_path_114), np.load(onset_path_115)]
+
+
+multi = texfigure.MultiFigure(1, 3, reference="onset")
+
+for i, anim in enumerate(ims):
+	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.3, height_ratio=1.3, figure_width_context='textwidth'))
+	
+	plt.imshow(anim, cmap='sdoaia304', origin='lower')
+	
+	Fig1 = manager.save_figure('onset{}'.format(i+1), fig)
+	Fig1.subfig_width = r"0.3\textwidth"
+	Fig1.caption = ""
+	multi.append(Fig1)
+
+multi.placement = 't'
+multi.caption = "BIG CAPTION"
+\end{pycode}
+
+\py[Onset]|multi|
+
+
 \subsection{Onset}
 The jet feature is observed in high resolution as it forms using SST and, fortunately, we can resolve initial stages of the jet formation.
 The jet is observed to initiate in the core of H$\alpha$ with two small bright points forming, and an ensuing jet developing above it. 
+\cref{onset} demonstrates the evolution of this feature in detail.
+Evident in \cref{onset1} we find the initial two bright points at the foot of the jet, the bright point of the left being significantly brighter than its countpart on the right.
+By \cref{onset2} shows the development of these two points \emph{i.e.} have now become two columns of brighter plasma.
+In the final formation stage, \cref{onset3} the jet has formed and is now a distinct feature against the background.
 This behaviour is in keeping with the standard jet formation model demonstrated by \cite{Shibata1992}, where the authors describe an 'inverted y' shape of brightened material that is a result of small scale flux emergence reconnection.
 
-Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at $07:48:00$.
+Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at 07:48:00.
 
 
 
@@ -241,7 +276,8 @@ plt.title('Length of the Jet over time')
 fig.autofmt_xdate()
 td_fig = manager.save_figure('t-d-plot', fig)
 td_fig.subfig_width = r"\columnwidth"
-td_fig.caption = r"Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H$\alpha$ line starting at $07:42$"
+td_fig.caption = ""
+#td_fig.caption = r"Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H$\alpha$ line starting at $07:42$"
 \end{pycode}
 
 \begin{figure}[t]
@@ -259,8 +295,9 @@ td_fig.caption = r"Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purpl
 		17.1 & 5.6 & 51.9 \\
 		13.1 & 5.6 & 36.6 \\
 		\end{tabular}
-		\caption{Table of maximised basic spatial properties of the jet.}
+		\caption{}
 	\end{subtable}
+	\caption{"a) Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H$\alpha$ line starting at $07:42$. b) Table of maximised basic spatial properties of the jet."}
 \end{figure}
 
 
@@ -296,30 +333,6 @@ print(sst_slit_fig.repr_figure(), file=sys.stderr)
 \py[SST_slit]|sst_slit_fig|
 
 
-\begin{pycode}[Onset]
-import numpy as np
-import sunpy.map
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import ImageGrid
-
-onset_path_113 = manager.data_file('crops_113.npy')
-
-
-
-ims = [np.load(onset_path_113), np.load('crop_114.npy'), np.load('crop_115.npy')]
-
-fig = plt.figure(1, (4.,4.), figsize=texfigure.figsize(pytex, 		figure_width_context='textwidth'))
-grid = ImageGrid(fig, 111, nrows_ncols=(2,2), axes_pad=0.0, label_mode="1")
-
-for i, anim in enumerate(ims):
-	plt.imshow(anim, axes=grid[i], cmap='sdoaia304', origin='lower')
-	
-onset_fig = manager.save_figure('onset_fig', fig)
-onset_fig.placement = 'b'
-onset_fig.caption = r'Expanded view of the origin of the jet feature as it forms. Observe the seperate footpoints forming the "inverted Y" shape of the standard model.'	
-\end{pycode}
-
-\py[Onset]|onset_fig|
 
 \subsection{STEREO-A}
 We are fortunate that we can observe the jet feature in the STEREO-A Heliospheric Imager (HI), with the position of the spacecraft at approximately $90\deg$ to the Sun-Earth line.
