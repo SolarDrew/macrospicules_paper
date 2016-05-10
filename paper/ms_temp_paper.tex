@@ -163,7 +163,9 @@ Let us begin with the evolution of the jet feature over time.
 We have utilised a self-built, manual feature measuring tool, which uses a clicking mechanism to select the foot and tip of the macrospicule, calculates the half weight and uses this as a guide to measure the width of the feature.
 Using this tool on each frame, and therefore the time cadence of the instrument, we obtain the evolution of the jet and general ballistic information.
 We have used this tool on each wavelength to examine the extent upwards through the corona. 
-Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at 07:48:00.\begin{pycode}[Onset]
+Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at 07:48:00.
+
+\begin{pycode}[Onset]
 import numpy as np
 import sunpy.map
 import matplotlib.pyplot as plt
@@ -189,7 +191,7 @@ for i, anim in enumerate(ims):
 	multi.append(Fig1)
 
 multi.placement = 't'
-multi.caption = "a) Observe the two bright points in the proximity of $()79, 60)$. We the point on the left is significatly brighter than the feinter on the right. We emphasise that the brightening around $(60, 50)$ is not a contributor to this jet. b) In this frame the brightpoints have extended, the feinter point has now extended up to $~95$ and the core of the brighter left feature has grown with it. c) At this point the two seperate points are now indistinguishable and the feature is now extending as one column. "
+multi.caption = "a) Observe the two bright points in the proximity of $(79, 60)$. We the point on the left is significatly brighter than the feinter on the right. We emphasise that the brightening around $(60, 50)$ is not a contributor to this jet. b) In this frame the brightpoints have extended, the feinter point has now extended up to $~95$ and the core of the brighter left feature has grown with it. c) At this point the two seperate points are now indistinguishable and the feature is now extending as one column. "
 \end{pycode}
 
 \py[Onset]|multi|
@@ -350,7 +352,41 @@ In this case we obtain 4 images in $30.4$ nm in which the jet is observed
 
 
 
+\begin{pycode}[STEREO]
+import numpy as np
+import sunpy.map
+import matplotlib.pyplot as plt
+import astropy.units as u
+from glob import glob
+from mpl_toolkits.axes_grid1 import ImageGrid
 
+path_stereo_1 = manager.data_file('20120621_072615_n4eua.fts')
+path_stereo_2 = manager.data_file('20120621_073615_n4eua.fts')
+path_stereo_3 = manager.data_file('20120621_074615_n4eua.fts')
+path_stereo_4 = manager.data_file('20120621_075615_n4eua.fts')
+
+stereos = [path_stereo_1, path_stereo_2, path_stereo_3, path_stereo_4]
+
+
+multi = texfigure.MultiFigure(2, 2, reference="stereo")
+
+
+for i, im in enumerate(stereos):
+	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.25, height_ratio=1.3, figure_width_context='textwidth'))
+	
+	amap = sunpy.map.Map(im)
+	crop = amap.submap([-640, -510]*u.arcsec, [-430, -300]*u.arcsec)
+	
+	Fig1 = manager.save_figure('stereo{}'.format(i+1), fig)
+	Fig1.subfig_width = r"0.25\textwidth"
+	Fig1.caption = ""
+	multi.append(Fig1)
+
+multi.placement = 't'
+multi.caption = ""
+\end{pycode}
+
+\py[STEREO]||
 
 
 
