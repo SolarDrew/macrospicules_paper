@@ -368,25 +368,25 @@ path_stereo_4 = manager.data_file('20120621_075615_n4eua.fts')
 stereos = [path_stereo_1, path_stereo_2, path_stereo_3, path_stereo_4]
 
 
-multi = texfigure.MultiFigure(2, 2, reference="stereo")
+multi_ST = texfigure.MultiFigure(1, 4, reference="stereo")
 
 
 for i, im in enumerate(stereos):
 	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.25, height_ratio=1.3, figure_width_context='textwidth'))
 	
 	amap = sunpy.map.Map(im)
-	crop = amap.submap([-640, -510]*u.arcsec, [-430, -300]*u.arcsec)
-	
+	crop = amap.submap([-640, -510]*u.arcsec, [-430, -330]*u.arcsec)
+	crop.plot(title=False)
 	Fig1 = manager.save_figure('stereo{}'.format(i+1), fig)
-	Fig1.subfig_width = r"0.25\textwidth"
+	Fig1.subfig_width = r"0.2\textwidth"
 	Fig1.caption = ""
-	multi.append(Fig1)
+	multi_ST.append(Fig1)
 
-multi.placement = 't'
-multi.caption = ""
+multi_ST.placement = 't'
+multi_ST.caption = "EUVI $30.4$ nm images from STEREO on $21$st June at a) 07:26:15, b) 07:36:15, c) 07:46:15 and d) 07:56:15. "
 \end{pycode}
 
-\py[STEREO]||
+\py[STEREO]|multi_ST|
 
 
 
