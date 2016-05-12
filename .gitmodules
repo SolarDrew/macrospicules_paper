@@ -1,0 +1,3 @@
+[submodule "CoronaTemps"]
+	path = CoronaTemps
+	url = git@github.com:drewleonard42/CoronaTemps.git
