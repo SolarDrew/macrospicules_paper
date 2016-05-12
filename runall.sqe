@@ -1,12 +1,16 @@
+#! /bin/bash
 #$ -S /bin/sh
 #$ -cwd
-#$ -q large.q
+#$ -j y
+##$ -q large.q
+#$ -N macrospicules
 
-module load gcc/4.8.1
-module load openmpi
-source ~/virtualenv-12.1.1/AR-tmaps-env/bin/activate
-cd /imaps/holly/home/ajl7/macrospicules_paper
+#rm runall.sqe.*
 
-rm runall.sqe.*
+module load apps/python/conda
+module load mpi/gcc/openmpi/1.8.8
+
+source activate macrospicules
+cd ~/macrospicules_paper/
 
 python run_tmaps.py
