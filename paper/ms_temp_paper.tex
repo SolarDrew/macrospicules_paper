@@ -401,17 +401,27 @@ There is, however, a hindrance with this.
 There are two seperate forms of the emmission spectra within the image.
 The region where the jet initialises, is on disk, and as a result the spectral analysis reveals an absorption spectra.
 Over the limb, however, the spectral profile changes to emission and we find two peaks.
-As a consequence of this, finding the total shift away from the core, $6562.8$ nm is made more complex.
+As a consequence of this, finding the total shift away from the core, $656.28$ nm, is made more complex.
 For pixel points which are on-disk, we fit a single Gaussian and calculate the mean, as is standard, and for the two peak spectra, we have utilised a double Gaussian.
 However, the problem becomes evident when we need to change between the two routines.
 
-We have utilised a Markov Chain Monte Carlo (MCMC) method to find the most accurate fit for the  and the Bayesian Information Criterion (BIC) to test which of the two fits is most appropriate from a given line as a solution to this problem.
+We have utilised a Markov Chain Monte Carlo (MCMC) (\cite{Richey2010}) method to find the most accurate fit and the Bayesian Information Criterion (BIC) to test which of the two fits is most appropriate from a given line as a solution to this problem.
+
+This method takes the 35 spectral intensity for a given pixel and samples multiple possible fits for the profile these produce.
+We then find the most likely fit from this range and minimise this final fit to find the mean value of the fit.
+Difference between the original core value and mean of the new fit is the calculated shift in wavelength and therefore the line of sight velocity for the chromospheric plasma.
+The process is the same for both single and double Gaussian fitting and as such we apply a BIC to test which fit is more appropriate.
+BIC has limitations when the number of parameters is of the same order of the size of the sample and differentiating between multiple complex models.
+In this case the sample is larger than the number of parameters and we are only testing two possible models, as such, we can use the test with confidence in the results.
+
 
 
 
 
 \section{Temperature Maps}
 \label{temp_map_sect}
+
+Now the temperature profile 
 
 
 
