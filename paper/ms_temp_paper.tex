@@ -92,7 +92,7 @@ More recently the question surrounding spicules is how they effect the atmospher
 \cite{Rouppe2015} used coordinated observations with SST and IRIS to study RRB's and RBE's, examining H$\alpha$, Mg II h \& k, C II and Si IV.
 The authors find that these spicule-like extensions observed in H$\alpha$ have counter parts in the hotter Magnesium lines and the upper chromosphere/transition region C II and Si IV, which would certainly imply that these features are heating either themselves or the atmosphere around them.
 
-These spicules are similar to other features such as surges, the already mentioned RRB's/RBE's and chromospheric jets, all of which need considering in terms spicules \citep{Tsiropoula2012}.
+These spicules are similar to other features such as surges, the already mentioned RRB's/RBE's and chromospheric jets, all of which need considering in terms spicules \citep{Tsiropoula2012} and \citep{Kuridze2015}.
 
 
 Higher in the chromosphere, we find macrospicules.
@@ -219,14 +219,17 @@ With its higher resolution, a slit based analysis of the jet can be observed in 
 Notice two distinct curves in the image, the first onset is at approximately $17$ and the second at a bright point originating at $~85$.
 We find that in this second phase of the jet, plasma extends higher into the atmosphere.
 This result is unusual as previous observations of recurrent jets have shown decay in subsequent initialisation events in observations such as \cite{Jiang2007}.
-Unfortunately the base of this jet on this occasion is obscured by material in front of the base, however, note the extensive brightening similar to that evident in the first jet, suggesting a similar initial reconnection.
+Unfortunately, a section of material is in front of the base of the jet and obscures our view of the second event.
 
 Considering the observations in multiple wavelengths, we notice the smaller extension visible in the coronal wavelengths.
 This is not unexpected, given its extent in the chromospheric lines, we can begin to categorise this as a chromospheric feature as opposed to coronal.
-% need a figure here of the coronal lines
+% demonstrate the appearence for the feature in the coronal lines
 Its appearance in Fig. X demonstrates that it is, in all likelihood an absorption feature, however we will investigate this further below.
 
-Evidently, the maximum extend of this feature is in SDO $30.4$ and maximises at $12.6$ Mm although the measurements in H$\alpha$ may exceed this.
+%double check this section
+Evidently, the maximum extent of this feature is in SDO $30.4$ and maximises at $12.6$ Mm although the measurements in H$\alpha$ may exceed this were it to be fully visible.
+Interestingly, the length of the jet in the coronal lines does not get larger after the second injection on plasma occurs.
+
 
 
 
@@ -287,7 +290,7 @@ fig.autofmt_xdate()
 td_fig = manager.save_figure('t-d-plot', fig)
 td_fig.subfig_width = r"\columnwidth"
 td_fig.caption = ""
-#td_fig.caption = r"Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore flatline at the top of the H$\alpha$ line starting at $07:42$"
+#td_fig.caption = r"Darkgold = H$\alpha$, Blue = 33.5 nm, Orange = 30.4 nm, Purple = 21.1 nm, Yellow = 17.1 nm, Green = 13.1 nm. The CRISP observations end earlier than thewhole evolution of the jet, and the top of the jet is cut off by the top og the image. Therefore we ignore the flatline at the top of the H$\alpha$ line starting at $07:42$"
 \end{pycode}
 
 \begin{figure}[t]
@@ -426,7 +429,15 @@ At the boundary we observe narrow dark columns in the emission on either side of
 Given that they appear on either side of the jet column and that the observations are in the core of the $H\alpha$ line, it is unlikely that this would be caused by a doppler-like effect.
 One possibility is that the cause is an instability effect, such as shear or Kelvin-Helmholtz, seen in \cite{Zaqarashvili2014} as the jet moves throughout the higher atmosphere.
 Supporting this hypothesis is that these images were recorded in the 'second phase' of the jet \emph{i.e.} after the second reconnection and the jet extends to its peak in $30.4$ nm. 
-As such, it is possible that these columns are a result of plasma being accelerated into the atmosphere.
+As such, it is possible that these columns are a result of plasma being accelerated through the less dense atmosphere.
+
+One of the possible primary results of these instabilities is a dissipation of energy into the surrounding atmosphere, as such we might expect an increase in temperature of the surrounding atmosphere.
+To this end we will utilise the temperature calculation method highlighted in \cite{Leonard2014}.
+
+The authors use a Differential Emission Measure (DEM) to obtain a temperature response from the SDO/AIA measurements.
+The temperature response is a combination of the wavelength response from the instrument and the contribution function which describes the emission from a given temperature.
+When using such a scheme, we need to decide on a general DEM profile to be applied to all pixels.
+Utilising a narrow Gaussian seems to provide the most accurate values when compared to synthetic observations.
 
 \begin{pycode}[Bound_SST]
 import numpy as np
@@ -457,22 +468,6 @@ for i, im in enumerate(ims):
 \end{pycode}
 
 \py[Bound_SST]|multi_db|
-
-
-Essential in investigating jets is their effect on the atmosphere and what occurs at the boundary between jet and atmosphere.
-With the high resolution of the CRISP instrument, we could possibly resolve some behaviour at the boundary between jet and atmosphere. 
-To this end, we have visually inspected the jet, and what we find is demonstrated in % % %fig ref here
-
-As such, given that the jet is visible in most of the coronal lines we have created temperature maps of the jet and surrounding atmosphere using the method highlighted in \cite{Leonard2014}.
-
-The authors use a Differential Emission Measure (DEM) to obtain a temperature response from the SDO/AIA measurements.
-The temperature response is a combination of the wavelength response from the instrument and the contribution function which describes the emission from a given temperature.
-When using such a scheme, we need to decide on a general DEM profile to be applied to all pixels.
-Utilising a narrow Gaussian seems to provide the most accurate values when compared to synthetic observations.
-
-
-
-
 
 
 \section{Discussion \& Conclusion}
