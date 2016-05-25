@@ -109,7 +109,7 @@ Again, with macrospicules extending high into the atmosphere, the question of th
 \cite{Pike_Harrison1997} observe outflows from the macrospicule of the order $200$ kms$^{-1}$ in He I and discuss whether these outflows could potentially accelerate the solar wind.
 However, work by \cite{Zaqarashvili2014} question whether jets moving at super-Alfv{\'e}nic speeds might cause a Kelvin-Helmholtz stability to form at the macrospicule/atmosphere boundary, which would, in turn, transport heat into the corona.
 
-A third  category are coronal jets, observed in slightly hotter lines of $17.1$ but still EUV such as those discussed in \cite{Shibata1992}.
+A third  category are coronal jets, observed in slightly hotter lines of $17.1$ but still EUV such as those discussed in \cite{Shibata1992} and simulated in papers such as \cite{Wyper2016}.
 Here, they are described later in \cite{Shibata1994} as reconnection events, where reconnection is triggered by flux emergence at the base of a small scale loop.
 However, after this reconnection, there are several models as to how the system will evolve.
 \cite{Moore2010} demonstrate a dichotomy in formation mechanism of coronal jets, between the standard 'inverted Y' model demonstrated by Shibata and the blowout jet model. 
@@ -417,12 +417,16 @@ In this case the sample is larger than the number of parameters and we are only 
 
 
 
-\section{Temperature Maps}
+\section{Effect on the atmosphere}
 \label{temp_map_sect}
 
-Essential in investigating jets is their effect on the atmosphere and what occurs at the boundary between jet and atmosphere.
-With the high resolution of the CRISP instrument, we could possibly resolve some behaviour at the boundary between jet and atmosphere. 
-To this end, we have visually inspected the jet, and what we find is demonstrated in % % %fig ref here
+With the increased resolution we can visually inspect the boundary between the jet and atmosphere.
+\cref{multi_db} details the evolution of the jet in the core of H$\alpha$ in over $115$ seconds.
+At the boundary we observe narrow dark columns in the emission on either side of the jet.
+Given that they appear on either side of the jet column and that the observations are in the core of the $H\alpha$ line, it is unlikely that this would be caused by a doppler-like effect.
+One possibility is that the cause is an instability effect, such as shear or Kelvin-Helmholtz, seen in \cite{Zaqarashvili2014} as the jet moves throughout the higher atmosphere.
+Supporting this hypothesis is that these images were recorded in the 'second phase' of the jet \emph{i.e.} after the second reconnection and the jet extends to its peak in $30.4$ nm. 
+As such, it is possible that these columns are a result of plasma being accelerated into the atmosphere.
 
 \begin{pycode}[Bound_SST]
 import numpy as np
@@ -453,6 +457,11 @@ for i, im in enumerate(ims):
 \end{pycode}
 
 \py[Bound_SST]|multi_db|
+
+
+Essential in investigating jets is their effect on the atmosphere and what occurs at the boundary between jet and atmosphere.
+With the high resolution of the CRISP instrument, we could possibly resolve some behaviour at the boundary between jet and atmosphere. 
+To this end, we have visually inspected the jet, and what we find is demonstrated in % % %fig ref here
 
 As such, given that the jet is visible in most of the coronal lines we have created temperature maps of the jet and surrounding atmosphere using the method highlighted in \cite{Leonard2014}.
 
