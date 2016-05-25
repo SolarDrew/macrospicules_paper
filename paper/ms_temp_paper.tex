@@ -137,6 +137,37 @@ In the following sections we aim to comprehensively discuss the physical propert
 % xray jets
 % Formation models for all of the things
 
+\begin{pycode}[Onset]
+import numpy as np
+import sunpy.map
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import ImageGrid
+
+onset_path_113 = manager.data_file('crop_113.npy')
+onset_path_114 = manager.data_file('crop_114.npy')
+onset_path_115 = manager.data_file('crop_115.npy')
+
+ims = [np.load(onset_path_113), np.load(onset_path_114), np.load(onset_path_115)]
+
+
+multi = texfigure.MultiFigure(1, 3, reference="onset")
+
+for i, anim in enumerate(ims):
+	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.3, height_ratio=1.3, figure_width_context='textwidth'))
+	
+	plt.imshow(anim, cmap='sdoaia304', origin='lower')
+	
+	Fig1 = manager.save_figure('onset{}'.format(i+1), fig)
+	Fig1.subfig_width = r"0.3\textwidth"
+	Fig1.caption = ""
+	multi.append(Fig1)
+
+multi.placement = 't!'
+multi.caption = "a) Observe the two bright points in the proximity of $(79, 60)$. We the point on the left is significatly brighter than the feinter on the right. We emphasise that the brightening around $(60, 50)$ is not a contributor to this jet. b) In this frame the brightpoints have extended, the feinter point has now extended up to $~95$ and the core of the brighter left feature has grown with it. c) At this point the two seperate points are now indistinguishable and the feature is now extending as one column. "
+\end{pycode}
+
+\py[Onset]|multi|
+
 
 
 \section{Observation}
@@ -164,38 +195,6 @@ We have utilised a self-built, manual feature measuring tool, which uses a click
 Using this tool on each frame, and therefore the time cadence of the instrument, we obtain the evolution of the jet and general ballistic information.
 We have used this tool on each wavelength to examine the extent upwards through the corona. 
 Observations in SDO record the entire lifetime of the feature, however the same is not true for observations using the SST, where the observation window in SST closes at 07:48:00.
-
-\begin{pycode}[Onset]
-import numpy as np
-import sunpy.map
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import ImageGrid
-
-onset_path_113 = manager.data_file('crop_113.npy')
-onset_path_114 = manager.data_file('crop_114.npy')
-onset_path_115 = manager.data_file('crop_115.npy')
-
-ims = [np.load(onset_path_113), np.load(onset_path_114), np.load(onset_path_115)]
-
-
-multi = texfigure.MultiFigure(1, 3, reference="onset")
-
-for i, anim in enumerate(ims):
-	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.3, height_ratio=1.3, figure_width_context='textwidth'))
-	
-	plt.imshow(anim, cmap='sdoaia304', origin='lower')
-	
-	Fig1 = manager.save_figure('onset{}'.format(i+1), fig)
-	Fig1.subfig_width = r"0.3\textwidth"
-	Fig1.caption = ""
-	multi.append(Fig1)
-
-multi.placement = 't'
-multi.caption = "a) Observe the two bright points in the proximity of $(79, 60)$. We the point on the left is significatly brighter than the feinter on the right. We emphasise that the brightening around $(60, 50)$ is not a contributor to this jet. b) In this frame the brightpoints have extended, the feinter point has now extended up to $~95$ and the core of the brighter left feature has grown with it. c) At this point the two seperate points are now indistinguishable and the feature is now extending as one column. "
-\end{pycode}
-
-\py[Onset]|multi|
-
 
 \subsection{Onset}
 The jet feature is observed in high resolution as it forms using SST and, fortunately, we can resolve initial stages of the jet formation.
@@ -421,8 +420,40 @@ In this case the sample is larger than the number of parameters and we are only 
 \section{Temperature Maps}
 \label{temp_map_sect}
 
-
 Essential in investigating jets is their effect on the atmosphere and what occurs at the boundary between jet and atmosphere.
+With the high resolution of the CRISP instrument, we could possibly resolve some behaviour at the boundary between jet and atmosphere. 
+To this end, we have visually inspected the jet, and what we find is demonstrated in % % %fig ref here
+
+\begin{pycode}[Bound_SST]
+import numpy as np
+from glob import glob
+import sunpy.map
+import matplotlib.pyplot as plt
+
+im_1 = manager.data_file('core_Ha_dark_165.npy')
+im_2 = manager.data_file('core_Ha_dark_170.npy')
+im_3 = manager.data_file('core_Ha_dark_175.npy')
+im_4 = manager.data_file('core_Ha_dark_180.npy')
+
+ims = [im_1, im_2, im_3, im_4]
+
+multi_db = texfigure.MultiFigure(1, 4, reference="demo_bound")
+multi_db.caption = "Sequence of images detailing an intermediate phase of the jets evolution. Beggining with a) 07:36:19, b) 07:36:19, c) 07:37:36 and d) 07:38:15"
+for i, im in enumerate(ims):
+	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.25, height_ratio=1.3, figure_width_context='textwidth'))
+
+	afile = np.load(im)
+	val_max = np.max(afile)
+	plt.imshow(afile, cmap='Greys_r', vmin=0.16*val_max, vmax=val_max, origin='lower', interpolation='none')
+	Fig1 = manager.save_figure('demo_bound{}'.format(i+1), fig)
+	Fig1.subfig_width = r"0.2\textwidth"
+	Fig1.caption = ""
+	multi_db.append(Fig1)
+
+\end{pycode}
+
+\py[Bound_SST]|multi_db|
+
 As such, given that the jet is visible in most of the coronal lines we have created temperature maps of the jet and surrounding atmosphere using the method highlighted in \cite{Leonard2014}.
 
 The authors use a Differential Emission Measure (DEM) to obtain a temperature response from the SDO/AIA measurements.
