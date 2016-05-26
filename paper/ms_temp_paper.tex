@@ -373,17 +373,17 @@ path_stereo_4 = manager.data_file('20120621_075615_n4eua.fts')
 stereos = [path_stereo_1, path_stereo_2, path_stereo_3, path_stereo_4]
 
 
-multi_ST = texfigure.MultiFigure(1, 4, reference="stereo")
+multi_ST = texfigure.MultiFigure(2, 2, reference="stereo")
 
 
 for i, im in enumerate(stereos):
-	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.25, height_ratio=1.3, figure_width_context='textwidth'))
+	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.4, figure_width_context='textwidth'))
 	
 	amap = sunpy.map.Map(im)
 	crop = amap.submap([-640, -510]*u.arcsec, [-430, -330]*u.arcsec)
 	crop.plot(title=False)
 	Fig1 = manager.save_figure('stereo{}'.format(i+1), fig)
-	Fig1.subfig_width = r"0.2\textwidth"
+	Fig1.subfig_width = r"0.4\textwidth"
 	Fig1.caption = ""
 	multi_ST.append(Fig1)
 
@@ -437,6 +437,7 @@ To this end we will utilise the temperature calculation method highlighted in \c
 The authors use a Differential Emission Measure (DEM) to obtain a temperature response from the SDO/AIA measurements.
 The temperature response is a combination of the wavelength response from the instrument and the contribution function which describes the emission from a given temperature.
 When using such a scheme, we need to decide on a general DEM profile to be applied to all pixels.
+The method uses a Gaussian scan across the emission in each line and property of the Gaussian; mean, amplitude and width. 
 Utilising a narrow Gaussian seems to provide the most accurate values when compared to synthetic observations.
 
 \begin{pycode}[Bound_SST]
@@ -456,7 +457,8 @@ multi_db = texfigure.MultiFigure(1, 4, reference="demo_bound")
 multi_db.caption = "Sequence of images detailing an intermediate phase of the jets evolution. Beggining with a) 07:36:19, b) 07:36:19, c) 07:37:36 and d) 07:38:15"
 for i, im in enumerate(ims):
 	fig = plt.figure(figsize=texfigure.figsize(pytex, scale=0.25, height_ratio=1.3, figure_width_context='textwidth'))
-
+	ax = plt.gca()
+	ax.tick_params(axis='both', colors='white', labelcolor='black')
 	afile = np.load(im)
 	val_max = np.max(afile)
 	plt.imshow(afile, cmap='Greys_r', vmin=0.16*val_max, vmax=val_max, origin='lower', interpolation='none')
@@ -466,6 +468,10 @@ for i, im in enumerate(ims):
 	multi_db.append(Fig1)
 
 \end{pycode}
+
+
+
+
 
 \py[Bound_SST]|multi_db|
 
