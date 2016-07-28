@@ -420,7 +420,7 @@ In this case the sample is larger than the number of parameters and we are only 
 This particular feature, as has already been mentioned, has two events in which material is accelerated upwards into the solar atmosphere.
 An examination of the dopplergrams reveals little in the way of rotational behaviour, however the second event demonstrates a characteristic division of red and blue.
 
-\begin{pycode}[doppler]
+\begin{pycode}[DOPPLER]
 import sunpy
 from sunpy.image import slit
 
@@ -440,23 +440,6 @@ from astropy.constants import c
 from glob import glob
 
 dopp_grid = texfigure.MultiFigure(2, 2, reference="Dop_Exam")
-
-path_dop_1 = manager.data_file('dops/dop_arr_test075.npy')
-path_dop_2 = manager.data_file('dops/dop_arr_test076.npy')
-path_dop_3 = manager.data_file('dops/dop_arr_test077.npy')
-path_dop_4 = manager.data_file('dops/dop_arr_test078.npy')
-path_dop_5 = manager.data_file('dops/dop_arr_test079.npy')
-path_dop_6 = manager.data_file('dops/dop_arr_test080.npy')
-path_dop_7 = manager.data_file('dops/dop_arr_test081.npy')
-path_dop_8 = manager.data_file('dops/dop_arr_test082.npy')
-path_dop_9 = manager.data_file('dops/dop_arr_test083.npy')
-path_dop_10 = manager.data_file('dops/dop_arr_test084.npy')
-path_dop_11 = manager.data_file('dops/dop_arr_test085.npy')
-path_dop_12 = manager.data_file('dops/dop_arr_test086.npy')
-path_dop_13 = manager.data_file('dops/dop_arr_test087.npy')
-path_dop_14 = manager.data_file('dops/dop_arr_test088.npy')
-path_dop_15 = manager.data_file('dops/dop_arr_test089.npy')
-path_dop_16 = manager.data_file('dops/dop_arr_test090.npy')
 
 # some functions
 def get_time(ind, time_0):
@@ -576,7 +559,7 @@ ax10.set_ylabel('Velocity {}'.format(dop_fin.unit))
 plt.sci(line_segments)
 
 dop_gird.placement = 't'
-dop_grid.caption = 'Captiony things'
+dop_grid.caption = ''
 
 
 plt.draw()
@@ -584,6 +567,18 @@ plt.show()
 
 \end{pycode}
 
+\py[DOPPLER]|dop_grid|
+
+
+The dopplergrams demonstrated in \cref{fig:dop_grid}
+Applying the method described above, we obtain dopplergrams of the feature when applied to the spectroscopic data produced by CRISP, presented in \cref{fig:dop_grid}.
+The immediately apparent when we examine the data is the difficulty in clearly identifying the jet, with the complex background demonstrating shifts in both directions.
+This is due top the effect of observing along the limb, we see features further round the disk as bulk motions.
+The jet we are examining, apparently originates in a 'bank' of spicules, visible as lines of red shift in the image.
+The initial acceleration of the spicule at $07:30$ shows no rotational motion and is infact hard to differentiate from the background.
+However, the second jet formation and consequent acceleration reveal significant rotational motion.
+
+As the onset occurs we first observe blue shifting on the right side of the jet
 
 
 
