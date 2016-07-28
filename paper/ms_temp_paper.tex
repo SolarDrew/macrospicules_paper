@@ -417,6 +417,170 @@ BIC has limitations when the number of parameters is of the same order of the si
 In this case the sample is larger than the number of parameters and we are only testing two possible models, as such, we can use the test with confidence in the results.
 
 
+\begin{pycode}[doppler]
+import sunpy
+from sunpy.image import slit
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from matplotlib import colors
+from mpl_toolkits.axes_grid1 import ImageGrid
+from matplotlib import gridspec
+from matplotlib.collections import LineCollection
+
+import numpy as np
+
+import astropy.units as u
+import datetime
+from datetime import timedelta
+from astropy.constants import c
+from glob import glob
+
+path_dop_1 = manager.data_file('dops/dop_arr_test075.npy')
+path_dop_2 = manager.data_file('dops/dop_arr_test076.npy')
+path_dop_3 = manager.data_file('dops/dop_arr_test077.npy')
+path_dop_4 = manager.data_file('dops/dop_arr_test078.npy')
+path_dop_5 = manager.data_file('dops/dop_arr_test079.npy')
+path_dop_6 = manager.data_file('dops/dop_arr_test080.npy')
+path_dop_7 = manager.data_file('dops/dop_arr_test081.npy')
+path_dop_8 = manager.data_file('dops/dop_arr_test082.npy')
+path_dop_9 = manager.data_file('dops/dop_arr_test083.npy')
+path_dop_10 = manager.data_file('dops/dop_arr_test084.npy')
+path_dop_11 = manager.data_file('dops/dop_arr_test085.npy')
+path_dop_12 = manager.data_file('dops/dop_arr_test086.npy')
+path_dop_13 = manager.data_file('dops/dop_arr_test087.npy')
+path_dop_14 = manager.data_file('dops/dop_arr_test088.npy')
+path_dop_15 = manager.data_file('dops/dop_arr_test089.npy')
+path_dop_16 = manager.data_file('dops/dop_arr_test090.npy')
+
+# some functions
+def get_time(ind, time_0):
+    current_time = time_0 + timedelta(seconds=7.7)*ind
+    return current_time
+
+def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
+    new_cmap = colors.LinearSegmentedColormap.from_list(
+        'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
+        cmap(np.linspace(minval, maxval, n)))
+    return new_cmap
+
+# read in some datas
+dop_files = []
+for i in range(75,90):
+	dop_files.append(manager.data_file('dops/dop_arr_test0{}.npy'.format(i)))
+dop_files.sort()
+
+t0_ha = datetime.datetime(2012,6,21,7,15,9)
+t0_dop = get_time(100, t0_ha)
+
+dops = np.zeros((len(dop_files), 331, 120))
+for i, afile in enumerate(dop_files):
+    dops[i] = np.load(afile)
+
+# process the the dops to get vels
+l0 = 6562.8*u.Angstrom
+dops = dops*u.Angstrom
+dops = (l0-dops)/l0*c
+dops = dops.to(u.km/u.s)
+
+# get the variables for the slit analysis
+# lets use a perfectly horizontal slit
+x1 = 45
+x2 = 90
+y1 = 58
+y2 = 90
+N = 0
+
+dop_frames = [75,76,77,78,79,80,81,82,83]
+
+### make the graph for time and slit
+slit_inds = slit.slit_count(45, 90, 58, 90, 0, 1, N)
+
+# index the arrays properly
+inds_x = np.array([slit_inds[:,:,0]])
+inds_y = np.array([slit_inds[:,:,1]])
+ind_dop = dops[inds_x, inds_y, :]
+
+dop_fin = ind_dop[0]
+
+
+# get the dopplergrams associated with the rotation
+slit_list = []
+frames = range(79,90)
+for i, n in enumerate(frames):
+    temp = dop_fin[0,:,n]
+    temp = temp[temp < 10*dop_fin.unit]
+    slit_list.append(temp)
+
+xy_slit = [np.array(zip(range(len(slit_inds[0])), s.value)) for s in slit_list]
+
+slit_line =  mpl.lines.Line2D(np.array([45,58]),
+                                     np.array([90,90]),
+                                     linestyle='solid', color='k')
+
+n_cmap = truncate_colormap(plt.get_cmap('Oranges'), 0.3, 1.0)
+
+# new figure using subplot2grid specificially
+fig = plt.figure(figsize=(6,12))
+gs = gridspec.GridSpec(3,4)
+ax1 = plt.subplot(gs[0,0])
+ax2 = plt.subplot(gs[0,1])
+ax3 = plt.subplot(gs[0,2])
+ax4 = plt.subplot(gs[0,3])
+ax5 = plt.subplot(gs[1,0])
+ax6 = plt.subplot(gs[1,1])
+ax7 = plt.subplot(gs[1,2])
+ax8 = plt.subplot(gs[1,3])
+ax9 = plt.subplot(gs[2,0])
+ax10 = plt.subplot(gs[2,1:])
+ 
+ax_list = [ax1, ax2, ax3, ax4, ax5,
+           ax6, ax7, ax8, ax9]
+
+for i, an_ax in zip(dop_frames, ax_list):
+    temp_dop = dops[i].value
+    im = an_ax.imshow(temp_dop[:250,40:], vmax=15, vmin=-15,
+             cmap='RdBu', origin='lower',
+             norm=mpl.colors.SymLogNorm(1))
+    im.cmap.set_under('w')
+    im.cmap.set_over('w')
+
+cb = fig.colorbar(im)
+cb.set_label('Velocity {}'.format(dop_fin.unit))
+
+# line collection section
+n_cmap = truncate_colormap(plt.get_cmap('Oranges'), 0.3, 1.0)
+
+# fig, ax = plt.subplots()
+line_segments = LineCollection(xy_slit,
+                               linewidths = 0.25,
+                               linestyle='solid',
+                               cmap=n_cmap)
+
+line_segments.set_array(np.arange(len(slit_list)))
+ax10.add_collection(line_segments)
+ax10.axis([1,10,-1.5,1.5])
+
+ax4.add_line(slit_line)
+
+axcb = fig.colorbar(line_segments)
+axcb.set_label('Time')
+ax10.set_title('Slit across')
+ax10.set_xlabel('Distance across slit')
+ax10.set_ylabel('Velocity {}'.format(dop_fin.unit))
+plt.sci(line_segments)
+plt.draw()
+plt.show()
+
+\end{pycode}
+
+
+
+
+
+
+
+
 
 
 
