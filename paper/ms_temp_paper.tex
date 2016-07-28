@@ -436,6 +436,8 @@ from datetime import timedelta
 from astropy.constants import c
 from glob import glob
 
+dopp_grid = texfigure.MultiFigure(2, 2, reference="Dop_Exam")
+
 path_dop_1 = manager.data_file('dops/dop_arr_test075.npy')
 path_dop_2 = manager.data_file('dops/dop_arr_test076.npy')
 path_dop_3 = manager.data_file('dops/dop_arr_test077.npy')
@@ -569,6 +571,11 @@ ax10.set_title('Slit across')
 ax10.set_xlabel('Distance across slit')
 ax10.set_ylabel('Velocity {}'.format(dop_fin.unit))
 plt.sci(line_segments)
+
+dop_gird.placement = 't'
+dop_grid.caption = 'Captiony things'
+
+
 plt.draw()
 plt.show()
 
