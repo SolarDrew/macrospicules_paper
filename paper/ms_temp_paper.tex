@@ -432,16 +432,16 @@ from matplotlib import gridspec
 from matplotlib.collections import LineCollection
 
 import numpy as np
+import numpy.ma as ma
 
 import astropy.units as u
 import datetime
 from datetime import timedelta
 from astropy.constants import c
+from sunkitsst.read_cubes import read_cubes
 from glob import glob
 
-dopp_grid = texfigure.MultiFigure(2, 2, reference="Dop_Exam")
-
-# some functions
+# some funcitons
 def get_time(ind, time_0):
     current_time = time_0 + timedelta(seconds=7.7)*ind
     return current_time
@@ -452,9 +452,18 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
         cmap(np.linspace(minval, maxval, n)))
     return new_cmap
 
+# # read in some datas
+# ha_files = glob('/storage2/jet/SST/*.npy')
+# ha_files.sort()
+# dop_files = glob('/storage2/jet/dop_arrs/*.npy')
+# dop_files.sort()
+
+dop_frames = [76,77,78,79,80,81,82,83,84]
+frame_numbers = np.arange(75,90)
+
 # read in some datas
 dop_files = []
-for i in range(75,90):
+for i in frame_numbers:
 	dop_files.append(manager.data_file('dops/dop_arr_test0{}.npy'.format(i)))
 dop_files.sort()
 
@@ -474,104 +483,109 @@ dops = dops.to(u.km/u.s)
 # get the variables for the slit analysis
 # lets use a perfectly horizontal slit
 x1 = 45
-x2 = 90
-y1 = 58
-y2 = 90
+x2 = 65
+y1 = y2 = 130
 N = 0
 
-dop_frames = [75,76,77,78,79,80,81,82,83]
 
 ### make the graph for time and slit
-slit_inds = slit.slit_count(45, 90, 58, 90, 0, 1, N)
+slit_inds = slit.slit_count(x1, y1, x2, y2, 0, 0, N)
 
 # index the arrays properly
 inds_x = np.array([slit_inds[:,:,0]])
 inds_y = np.array([slit_inds[:,:,1]])
-ind_dop = dops[inds_x, inds_y, :]
+ind_dop = dops[:,inds_y, inds_x]
 
-dop_fin = ind_dop[0]
-
+dop_fin = ind_dop[:,0]
 
 # get the dopplergrams associated with the rotation
 slit_list = []
-frames = range(79,90)
-for i, n in enumerate(frames):
-    temp = dop_fin[0,:,n]
-    temp = temp[temp < 10*dop_fin.unit]
+for i, n in enumerate(frame_numbers):
+    temp = dop_fin[i]
+    temp[temp > 20*dop_fin.unit] = np.NaN
     slit_list.append(temp)
 
-xy_slit = [np.array(zip(range(len(slit_inds[0])), s.value)) for s in slit_list]
+xy_slit = [np.array(zip(range(len(slit_inds[0])), s[0].value)) for s in slit_list]
 
-slit_line =  mpl.lines.Line2D(np.array([45,58]),
-                                     np.array([90,90]),
-                                     linestyle='solid', color='k')
 
 n_cmap = truncate_colormap(plt.get_cmap('Oranges'), 0.3, 1.0)
 
+
 # new figure using subplot2grid specificially
-fig = plt.figure(figsize=(6,12))
-gs = gridspec.GridSpec(3,4)
-ax1 = plt.subplot(gs[0,0])
-ax2 = plt.subplot(gs[0,1])
-ax3 = plt.subplot(gs[0,2])
-ax4 = plt.subplot(gs[0,3])
-ax5 = plt.subplot(gs[1,0])
-ax6 = plt.subplot(gs[1,1])
-ax7 = plt.subplot(gs[1,2])
-ax8 = plt.subplot(gs[1,3])
-ax9 = plt.subplot(gs[2,0])
-ax10 = plt.subplot(gs[2,1:])
+fig = plt.figure(figsize=texfigure.figsize(pytex, height_ratio=1.3, figure_width_context='textwidth'))
+gs = gridspec.GridSpec(3,8)
+ax1 = plt.subplot(gs[0,0:2])
+ax2 = plt.subplot(gs[0,2:4])
+ax3 = plt.subplot(gs[0,4:6])
+ax4 = plt.subplot(gs[0,6:8])
+ax5 = plt.subplot(gs[1,0:2])
+ax6 = plt.subplot(gs[1,2:4])
+ax7 = plt.subplot(gs[1,4:6])
+ax8 = plt.subplot(gs[1,6:8])
+ax9 = plt.subplot(gs[2,0:2])
+ax10 = plt.subplot(gs[2,3:])
  
 ax_list = [ax1, ax2, ax3, ax4, ax5,
            ax6, ax7, ax8, ax9]
 
-for i, an_ax in zip(dop_frames, ax_list):
+for n, an_ax in zip(dop_frames, ax_list):
+    i = np.where(frame_numbers == n)[0][0]
+    time_dop = get_time(n, t0_dop).strftime('%H:%M:%S')
     temp_dop = dops[i].value
+    y_shift = 40
     im = an_ax.imshow(temp_dop[:250,40:], vmax=15, vmin=-15,
-             cmap='RdBu', origin='lower',
-             norm=mpl.colors.SymLogNorm(1))
+                      cmap='RdBu', origin='lower',
+                      norm=mpl.colors.SymLogNorm(1),
+                      interpolation='none')
+    an_ax.plot([x1, x2], [y2-y_shift,y2-y_shift], color='k')
+    an_ax.set_title('{}'.format(time_dop), fontsize=10)
+    an_ax.set_xlim(left=1, right=80)
+    an_ax.set_ylim(bottom=1, top=225)
+    an_ax.locator_params(axis='x', nbins=4)
     im.cmap.set_under('w')
     im.cmap.set_over('w')
 
-cb = fig.colorbar(im)
-cb.set_label('Velocity {}'.format(dop_fin.unit))
+cb = fig.colorbar(im, ax=ax9, pad=0.1)
+cb.set_label('Velocity {}'.format(dop_fin.unit._repr_latex_()))
+cb.set_ticks([-15,-9,-6,-3,-2,-1,0,1,2,3,6,9,15])
 
 # line collection section
 n_cmap = truncate_colormap(plt.get_cmap('Oranges'), 0.3, 1.0)
 
 # fig, ax = plt.subplots()
 line_segments = LineCollection(xy_slit,
-                               linewidths = 0.25,
+                               linewidths = 0.5,
                                linestyle='solid',
                                cmap=n_cmap)
 
-line_segments.set_array(np.arange(len(slit_list)))
+line_segments.set_array(np.arange(1,len(slit_list)+1))
 ax10.add_collection(line_segments)
-ax10.axis([1,10,-1.5,1.5])
-
-ax4.add_line(slit_line)
+ax10.axis([1,xy_slit[0].shape[0]-1,-1.6,1.6])
+ax10.axhline(0, color='k', linewidth=0.5)
 
 axcb = fig.colorbar(line_segments)
-axcb.set_label('Time')
-ax10.set_title('Slit across')
-ax10.set_xlabel('Distance across slit')
-ax10.set_ylabel('Velocity {}'.format(dop_fin.unit))
+axcb.set_label('Frame Number')
+axcb.set_ticks(range(1, len(xy_slit)+1))
+#ax10.set_title('Slit across')
+ax10.set_xlabel('Distance Along Slit [pixels]')
+ax10.set_ylabel('Velocity {}'.format(dop_fin.unit._repr_latex_()))
 plt.sci(line_segments)
 
-dop_gird.placement = 't'
+gs.tight_layout(fig, w_pad=0.2, pad=4)
+
+dop_grid = manager.save_figure('dop-exam', fig)
+dop_grid.figure_width = r'\textwidth'
+dop_grid.placement = 't'
 dop_grid.caption = ''
 
-
-plt.draw()
-plt.show()
 
 \end{pycode}
 
 \py[DOPPLER]|dop_grid|
 
 
-The dopplergrams demonstrated in \cref{fig:dop_grid}
-Applying the method described above, we obtain dopplergrams of the feature when applied to the spectroscopic data produced by CRISP, presented in \cref{fig:dop_grid}.
+The dopplergrams demonstrated in \cref{fig:Dop_Exam}
+Applying the method described above, we obtain dopplergrams of the feature when applied to the spectroscopic data produced by CRISP, presented in \cref{fig:Dop_Exam}.
 The immediately apparent when we examine the data is the difficulty in clearly identifying the jet, with the complex background demonstrating shifts in both directions.
 This is due top the effect of observing along the limb, we see features further round the disk as bulk motions.
 The jet we are examining, apparently originates in a 'bank' of spicules, visible as lines of red shift in the image.
