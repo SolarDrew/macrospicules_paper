@@ -416,9 +416,19 @@ The process is the same for both single and double Gaussian fitting and as such 
 BIC has limitations when the number of parameters is of the same order of the size of the sample and differentiating between multiple complex models.
 In this case the sample is larger than the number of parameters and we are only testing two possible models, as such, we can use the test with confidence in the results.
 
-% will need to rewrite this at a later date
+
+The result of applying the above method to the SST dataset is presented in \cref{fig:dop_grid}.
 This particular feature, as has already been mentioned, has two events in which material is accelerated upwards into the solar atmosphere.
-An examination of the dopplergrams reveals little in the way of rotational behaviour, however the second event demonstrates a characteristic division of red and blue.
+The first event is not readily visible in the dopplergrams, difficult as it is to pick out against a line of spicule-like features all showing redshifts, away from the viewewing direction.
+This result is to be expected given the we have demonstrated movement away from the 'camera' in \cref{fig:stereo}.
+Whereas, the second expulsion of material, originating at $07:37$, exhibits the classic behaviour of a rotating feature in dopplergrams, a red/blue split over the body of the feature. 
+ 
+In order to examine the behaviour of the jet we take a horizontal slit across the midpoint of the jet in order to study its evolution in detail.
+It is clear that the second event comes from a similarly small element to the first and evolves upwards, joining the full formation of the jet, hence why the apparent rotation of the jet does not appear to spread across the rest of the jet as seen in H$\alpha$.
+
+As the jet evolves we see an initial red shift 
+
+
 
 \begin{pycode}[DOPPLER]
 import sunpy
@@ -458,7 +468,7 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
 # dop_files = glob('/storage2/jet/dop_arrs/*.npy')
 # dop_files.sort()
 
-dop_frames = [76,77,78,79,80,81,82,83,84]
+dop_frames = [76,77,78,79,80,81,82,83,85]
 frame_numbers = np.arange(75,90)
 
 # read in some datas
