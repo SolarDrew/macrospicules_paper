@@ -634,13 +634,12 @@ Supporting this hypothesis is that these images were recorded in the 'second pha
 As such, it is possible that these columns are a result of plasma being accelerated through the less dense atmosphere.
 
 One of the possible primary results of these instabilities is a dissipation of energy into the surrounding atmosphere, as such we might expect an increase in temperature of the surrounding atmosphere.
-To this end we will utilise the temperature calculation method highlighted in \cite{Leonard2014}.
-
-The authors use a Differential Emission Measure (DEM) to obtain a temperature response from the SDO/AIA measurements.
-The temperature response is a combination of the wavelength response from the instrument and the contribution function which describes the emission from a given temperature.
-When using such a scheme, we need to decide on a general DEM profile to be applied to all pixels.
-The method uses a Gaussian scan across the emission in each line and property of the Gaussian; mean, amplitude and width. 
-Utilising a narrow Gaussian seems to provide the most accurate values when compared to synthetic observations.
+To this end we will utilise the temperature estimation method described by \cite{Leonard2014}, which will be summarised briefly here.
+This method models the temperature in each pixel of a set of SDO/AIA images as a Differential Emission Measure (DEM) function, which is assumed to have a Gaussian shape.
+The temperature at which this function peaks is estimated by comparing the measured AIA emission to synthetic emission calculated from atomic data, the instrument wavelength response, and model DEMs peaking at a range of temperatures.
+The width and height of the Gaussian DEM are kept constant in the interest of reducing computation time.
+The width, representing the distribution of temperatures within a given pixel, is assumed to be narrow and is set at 0.1.
+The DEM is normalised such that the amplitude is 1, and other values in the calculation are also normalised as appropriate.
 
 \begin{pycode}[Bound_SST]
 import numpy as np
