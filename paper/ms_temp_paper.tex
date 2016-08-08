@@ -416,8 +416,10 @@ The process is the same for both single and double Gaussian fitting and as such 
 BIC has limitations when the number of parameters is of the same order of the size of the sample and differentiating between multiple complex models.
 In this case the sample is larger than the number of parameters and we are only testing two possible models, as such, we can use the test with confidence in the results.
 
+The result of applying the above method to the CRISP/SST spectroscopic dataset is presented in \cref{fig:dop_grid}.
+Immediately apparent in the images is the banding structured red and blue shifts, the effect is created as a result of the optical depth created when observing at the limb. 
+The jet forms in amongst a blue band of smaller thin structures, making early observations in dopplergram difficult.  
 
-The result of applying the above method to the SST dataset is presented in \cref{fig:dop_grid}.
 This particular feature, as has already been mentioned, has two events in which material is accelerated upwards into the solar atmosphere.
 The first event is not readily visible in the dopplergrams, difficult as it is to pick out against a line of spicule-like features all showing redshifts, away from the viewewing direction.
 This result is to be expected given the we have demonstrated movement away from the 'camera' in \cref{fig:stereo}.
@@ -426,7 +428,30 @@ Whereas, the second expulsion of material, originating at $07:37$, exhibits the 
 In order to examine the behaviour of the jet we take a horizontal slit across the midpoint of the jet in order to study its evolution in detail.
 It is clear that the second event comes from a similarly small element to the first and evolves upwards, joining the full formation of the jet, hence why the apparent rotation of the jet does not appear to spread across the rest of the jet as seen in H$\alpha$.
 
-As the jet evolves we see an initial red shift 
+As the jet evolves we see an initial blue shift, matching the acceleration upwards seen in H$\alpha$, and it is only after a few second seconds of evolution that rotational behaviour begins to become evident.
+The first panel in \cref(fig:dop_grid) at $07:37:44$ demonstrates the first panel where there might be in inkling of redshift on the right ride of the feature, with a thin line registering as moving away from the camera.
+Noticeably, this rotation does not begin at the base of the feature, instead, the rotation manifests from the tip downwards over the next two images at $07:37:51$ and $07:37:59$.
+
+By the time the jet reaches $07:39:07$, we begin to observe a thin formation of red shift at the right side of the base of the feature, and by $07:38:15$, the red-shift has entirely taken over the right hand side.
+Though once again, the next frame shows progression up the spire of the feature.
+
+We subsequently observe the sift to disappear from the right hand side of the jet, however, the subsequent two images show an element of red shift now on the left of the feature.
+This element consequently develops into longer feature in $07:38:53$ and subsequent images, to the point where red shift now dominates the left hand side of the feature.
+
+This behaviour is extremely interesting as it demonstrates a torsional motion of the entire body of the feature, with the structure rotating anti-clockwise and then clockwise.
+This is a result of the release of magnetic tension in the initial reconnection event causing an unwinding of the inherent twist in the initial loop.
+We suggest that, as a result of the speed of the initial acceleration of the plasma material, this untwisting began at the top of the plasma column as is seen in $07:37:51$.
+The peak of this untwisting, when the red shift dominates the RHS at $07:38:15$, with the highest velocity values observed at approximately $3-4$ kms{^{-1}} and the 'body' of the feature demonstrating velocities in the range $1.0-1.5$ kms{^{-1}}.
+
+From here, the velocity changes moves into the blue range and then appears on the other side of the feature.
+This is a result of the magnetic pressure acting as restoring force, and rotating the feature in the opposite direction. 
+However in this case, not to the same magnitude, an expected outcome due to inherent loss of energy from the system.
+By the last panel at $07:39:16$, the feature has returned to a 'neutral' state, as such we can estimate an approximate period of a minute and a half.
+
+% this section needs rewriting
+The velocity values given here are slow compared to those presented in previous works, however, we believe these to be accurate, and attribute this to the smalls scale of the initial loop.
+A wider loop would produce a greater radius for the plasma to rotate around, and therefore a greater angular velocity.% some questionable physics going on here
+
 
 
 
@@ -544,7 +569,7 @@ for n, an_ax in zip(dop_frames, ax_list):
     temp_dop = dops[i].value
     y_shift = 40
     im = an_ax.imshow(temp_dop[:250,40:], vmax=15, vmin=-15,
-                      cmap='RdBu', origin='lower',
+                      cmap='RdBu_r', origin='lower',
                       norm=mpl.colors.SymLogNorm(1),
                       interpolation='none')
     an_ax.plot([x1, x2], [y2-y_shift,y2-y_shift], color='k')
@@ -592,22 +617,6 @@ dop_grid.caption = ''
 \end{pycode}
 
 \py[DOPPLER]|dop_grid|
-
-
-The dopplergrams demonstrated in \cref{fig:Dop_Exam}
-Applying the method described above, we obtain dopplergrams of the feature when applied to the spectroscopic data produced by CRISP, presented in \cref{fig:Dop_Exam}.
-The immediately apparent when we examine the data is the difficulty in clearly identifying the jet, with the complex background demonstrating shifts in both directions.
-This is due top the effect of observing along the limb, we see features further round the disk as bulk motions.
-The jet we are examining, apparently originates in a 'bank' of spicules, visible as lines of red shift in the image.
-The initial acceleration of the spicule at $07:30$ shows no rotational motion and is infact hard to differentiate from the background.
-However, the second jet formation and consequent acceleration reveal significant rotational motion.
-
-As the onset occurs we first observe blue shifting on the right side of the jet
-
-
-
-
-
 
 
 
